@@ -1,0 +1,19 @@
+{
+  "name": "denali-node-orm2",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "denali build",
+    "test": "denali test"
+  },
+  "keywords": [
+    "denali",
+    "denali-addon",
+    "addon"
+  ],
+  "main": "dist/app/index.js",
+  "dependencies": {
+    "bluebird": "^2.9.25",
+    "denali": "davewasmer/denali",
+    "lodash": "^4.0.0"
+  }
+}
