@@ -7,7 +7,7 @@ import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
 
 const typeMap = {
-  text: String,
+  string: String,
   number: Number,
   boolean: Boolean,
   json: Object,
