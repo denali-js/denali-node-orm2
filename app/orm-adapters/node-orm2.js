@@ -39,56 +39,56 @@ export default class NodeORM2Adapter extends ORMAdapter {
     return new AdapterModel(data);
   }
 
-  static idFor(record) {
-    return record.id;
+  static idFor(model) {
+    return model.record.id;
   }
 
-  static getAttribute(record, property) {
-    return record[property];
+  static getAttribute(model, property) {
+    return model.record[property];
   }
 
-  static setAttribute(record, property, value) {
-    return record[property] = value;
+  static setAttribute(model, property, value) {
+    return model.record[property] = value;
   }
 
-  static deleteAttribute(record, property) {
-    return record[property] = null;
+  static deleteAttribute(model, property) {
+    return model.record[property] = null;
   }
 
-  static getRelated(record, relationship) {
+  static getRelated(model, relationship) {
     return fromNode((cb) => {
-      record[`get${ upperFirst(relationship) }`](cb);
+      model.record[`get${ upperFirst(relationship) }`](cb);
     });
   }
 
-  static setRelated(record, relationship, relatedRecords) {
+  static setRelated(model, relationship, relatedRecords) {
     return fromNode((cb) => {
-      record[`set${ upperFirst(relationship) }`](relatedRecords, cb);
+      model.record[`set${ upperFirst(relationship) }`](relatedRecords, cb);
     });
   }
 
-  static addRelated(record, relationship, relatedRecord) {
+  static addRelated(model, relationship, relatedRecord) {
     return fromNode((cb) => {
-      record[`add${ upperFirst(relationship) }`](relatedRecord, cb);
+      model.record[`add${ upperFirst(relationship) }`](relatedRecord, cb);
     });
   }
 
-  static removeRelated(record, relationship, relatedRecord) {
+  static removeRelated(model, relationship, relatedRecord) {
     return fromNode((cb) => {
       let args = [ cb ];
       if (relatedRecord) {
         args.unshift([ relatedRecord ]);
       }
-      record[`remove${ upperFirst(relationship) }`](...args);
+      model.record[`remove${ upperFirst(relationship) }`](...args);
     });
   }
 
-  static saveRecord(record) {
-    return fromNode(record.save.bind(record));
+  static saveRecord(model) {
+    return fromNode(model.record.save.bind(model.record));
   }
 
-  static deleteRecord(record) {
-    return fromNode(record.remove.bind(record));
+  static deleteRecord(model) {
+    return fromNode(model.record.remove.bind(model.record));
   }
 
   static define(Model) {
