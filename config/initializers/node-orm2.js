@@ -19,9 +19,6 @@ export default {
         adapter.db = db;
         let models = container.lookupAll('model');
         let adapterModels = mapValues(models, (Model) => {
-          if (Model.hasOwnProperty('abstract') && Model.abstract) {
-            return;
-          }
           return adapter.define(Model);
         });
         adapter.adapterModels = adapterModels;

@@ -7,11 +7,11 @@ import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
 
 const typeMap = {
-  text: String,
-  number: Number,
-  boolean: Boolean,
-  json: Object,
-  date: Date
+  text: 'text',
+  number: 'number',
+  boolean: 'boolean',
+  json: 'object',
+  date: 'date'
 };
 
 export default class NodeORM2Adapter extends ORMAdapter {
@@ -93,9 +93,12 @@ export default class NodeORM2Adapter extends ORMAdapter {
 
   static define(Model) {
     let attributes = {};
-    forIn(Model, (value, key) => {
-      if (value.isAttribute) {
-        attributes[this.serializeKey(key)] = this.typeForAttribute(value);
+    Model.eachAttribute((key, attribute) => {
+      if (attribute.isAttribute) {
+        attributes[key] = {
+          mapsTo: this.serializeKey(key),
+          type: this.typeForAttribute(attribute)
+        }
       }
     });
     return this.db.define(Model.type, attributes);
