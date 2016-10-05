@@ -98,7 +98,6 @@ export default class NodeORM2Adapter extends ORMAdapter {
         attributes[this.serializeKey(key)] = this.typeForAttribute(value);
       }
     });
-    console.log(Model.type, attributes);
     return this.db.define(Model.type, attributes);
   }
 
