@@ -18,9 +18,15 @@ export default {
       }).then((db) => {
         adapter.db = db;
         let models = container.lookupAll('model');
-        let adapterModels = mapValues(models, (Model) => {
-          return adapter.define(Model);
+
+        let adapterModels = {};
+        forEach(models, (Model, key) => {
+          if (Model.hasOwnProperty('abstract') && Model.abstract) {
+            return;
+          }
+          adapterModels[key] = adapter.define(Model);
         });
+
         adapter.adapterModels = adapterModels;
         adapter.models = models;
         forEach(adapterModels, (AdapterModel, type) => {
