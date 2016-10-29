@@ -38,6 +38,11 @@ Table names will shift to being pluralized shortly by default but we'd also like
 both the table name and column naming approach to be configurable in the future to
 support databases already in use.
 
+## Troubleshooting
+
+If you are using the sqlite driver and see a `Connection lost - driver does not support reconnection` error, double-check
+the path to your DB.  This message can be thrown if the database is not found ...
+
 ## Developing
 
 1. Clone the repo down
