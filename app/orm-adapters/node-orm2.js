@@ -49,10 +49,12 @@ export default class NodeORM2Adapter extends ORMAdapter {
 
   static setAttribute(model, property, value) {
     model.record[property] = value;
+    return true;
   }
 
   static deleteAttribute(model, property) {
     model.record[property] = null;
+    return true;
   }
 
   static getRelated(model, relationship) {
