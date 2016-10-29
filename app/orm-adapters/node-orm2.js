@@ -16,7 +16,7 @@ const typeMap = {
 
 export default class NodeORM2Adapter extends ORMAdapter {
 
-  static find(type, query, options) {
+  static find(type, query /* , options */) {
     let AdapterModel = this.adapterModels[type];
     return fromNode((cb) => {
       if ([ 'number', 'string' ].includes(typeof query)) {
@@ -27,14 +27,14 @@ export default class NodeORM2Adapter extends ORMAdapter {
     });
   }
 
-  static createRecord(type, data, options) {
+  static createRecord(type, data /* , options */) {
     let AdapterModel = this.adapterModels[type];
     return fromNode((cb) => {
       AdapterModel.create(data, cb);
     });
   }
 
-  static buildRecord(type, data, options) {
+  static buildRecord(type, data /* , options */) {
     let AdapterModel = this.adapterModels[type];
     return new AdapterModel(data);
   }
@@ -48,11 +48,11 @@ export default class NodeORM2Adapter extends ORMAdapter {
   }
 
   static setAttribute(model, property, value) {
-    return model.record[property] = value;
+    model.record[property] = value;
   }
 
   static deleteAttribute(model, property) {
-    return model.record[property] = null;
+    model.record[property] = null;
   }
 
   static getRelated(model, relationship) {
@@ -98,7 +98,7 @@ export default class NodeORM2Adapter extends ORMAdapter {
         attributes[key] = {
           mapsTo: this.serializeKey(key),
           type: this.typeForAttribute(attribute)
-        }
+        };
       }
     });
     return this.db.define(Model.type, attributes);
