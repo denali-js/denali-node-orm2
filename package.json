@@ -16,7 +16,7 @@
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
     "bluebird": "^3.4.6",
-    "denali": "0.0.12",
+    "denali": "^0.0.12",
     "eslint": "^2.11.0",
     "eslint-config-denali": "^1.1.0",
     "lodash": "^4.16.4",
