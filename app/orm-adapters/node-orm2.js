@@ -6,14 +6,6 @@ import forEach from 'lodash/forEach';
 import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
 
-const typeMap = {
-  text: 'text',
-  number: 'number',
-  boolean: 'boolean',
-  json: 'object',
-  date: 'date'
-};
-
 export default class NodeORM2Adapter extends ORMAdapter {
 
   static find(type, query /* , options */) {
@@ -99,7 +91,7 @@ export default class NodeORM2Adapter extends ORMAdapter {
       if (attribute.isAttribute) {
         attributes[key] = {
           mapsTo: this.serializeKey(key),
-          type: this.typeForAttribute(attribute)
+          type: attribute.type
         };
       }
     });
@@ -125,12 +117,6 @@ export default class NodeORM2Adapter extends ORMAdapter {
 
   static serializeKey(key) {
     return snakeCase(key);
-  }
-
-  static typeForAttribute(attribute) {
-    let type = typeMap[attribute.type];
-    assert(type, `"${ attribute.type }" data type is not supported by the node-orm2 adapter. Supported types are: ${ Object.keys(typeMap).join(', ') }`);
-    return type;
   }
 
 }
