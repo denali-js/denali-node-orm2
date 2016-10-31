@@ -10,8 +10,8 @@ Allows use of [Node-ORM2](https://github.com/dresende/node-orm2) to talk to your
 
 ## Available attributes
 In Denali, each ORM defines its own set of model attribute types.  If you are shifting
-from a different ORM adapter, you'll want to double-check that your attribute types
-all match up here.
+from a different ORM adapter, you'll want to confirm that your attribute types match what Node-ORM2
+expects.  Here are some of the key basic types:
 
 - `text`
 - `number`
@@ -20,7 +20,7 @@ all match up here.
 - `data`
 
 Node-ORM2 supports additional types ([visible here](https://github.com/dresende/node-orm2/wiki/Model-Properties#types))
-but we haven't yet added those to this adapter.  PRs gladly accepted if you need to add additional types.
+and can support additional types that match your DB of choice.
 
 ## Opinions
 Currently, this adapter assumes singular table names and snake-cased attribute names.
