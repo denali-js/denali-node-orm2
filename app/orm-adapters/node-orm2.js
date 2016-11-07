@@ -6,17 +6,9 @@ import forEach from 'lodash/forEach';
 import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
 
-const typeMap = {
-  text: String,
-  number: Number,
-  boolean: Boolean,
-  json: Object,
-  date: Date
-};
-
 export default class NodeORM2Adapter extends ORMAdapter {
 
-  static find(type, query, options) {
+  static find(type, query /* , options */) {
     let AdapterModel = this.adapterModels[type];
     return fromNode((cb) => {
       if ([ 'number', 'string' ].includes(typeof query)) {
@@ -27,78 +19,82 @@ export default class NodeORM2Adapter extends ORMAdapter {
     });
   }
 
-  static createRecord(type, data, options) {
+  static createRecord(type, data /* , options */) {
     let AdapterModel = this.adapterModels[type];
     return fromNode((cb) => {
       AdapterModel.create(data, cb);
     });
   }
 
-  static buildRecord(type, data, options) {
+  static buildRecord(type, data /* , options */) {
     let AdapterModel = this.adapterModels[type];
     return new AdapterModel(data);
   }
 
-  static idFor(record) {
-    return record.id;
+  static idFor(model) {
+    return model.record.id;
   }
 
-  static getAttribute(record, property) {
-    return record[property];
+  static getAttribute(model, property) {
+    return model.record[property];
   }
 
-  static setAttribute(record, property, value) {
-    return record[property] = value;
+  static setAttribute(model, property, value) {
+    model.record[property] = value;
+    return true;
   }
 
-  static deleteAttribute(record, property) {
-    return record[property] = null;
+  static deleteAttribute(model, property) {
+    model.record[property] = null;
+    return true;
   }
 
-  static getRelated(record, relationship) {
+  static getRelated(model, relationship) {
     return fromNode((cb) => {
-      record[`get${ upperFirst(relationship) }`](cb);
+      model.record[`get${ upperFirst(relationship) }`](cb);
     });
   }
 
-  static setRelated(record, relationship, relatedRecords) {
+  static setRelated(model, relationship, relatedRecords) {
     return fromNode((cb) => {
-      record[`set${ upperFirst(relationship) }`](relatedRecords, cb);
+      model.record[`set${ upperFirst(relationship) }`](relatedRecords, cb);
     });
   }
 
-  static addRelated(record, relationship, relatedRecord) {
+  static addRelated(model, relationship, relatedRecord) {
     return fromNode((cb) => {
-      record[`add${ upperFirst(relationship) }`](relatedRecord, cb);
+      model.record[`add${ upperFirst(relationship) }`](relatedRecord, cb);
     });
   }
 
-  static removeRelated(record, relationship, relatedRecord) {
+  static removeRelated(model, relationship, relatedRecord) {
     return fromNode((cb) => {
       let args = [ cb ];
       if (relatedRecord) {
         args.unshift([ relatedRecord ]);
       }
-      record[`remove${ upperFirst(relationship) }`](...args);
+      model.record[`remove${ upperFirst(relationship) }`](...args);
     });
   }
 
-  static saveRecord(record) {
-    return fromNode(record.save.bind(record));
+  static saveRecord(model) {
+    return fromNode(model.record.save.bind(model.record));
   }
 
-  static deleteRecord(record) {
-    return fromNode(record.remove.bind(record));
+  static deleteRecord(model) {
+    return fromNode(model.record.remove.bind(model.record));
   }
 
   static define(Model) {
     let attributes = {};
-    forIn(Model, (value, key) => {
-      if (value.isAttribute) {
-        attributes[this.serializeKey(key)] = this.typeForAttribute(value);
+    Model.eachAttribute((key, attribute) => {
+      if (attribute.isAttribute) {
+        attributes[key] = {
+          mapsTo: this.serializeKey(key),
+          type: attribute.type
+        };
       }
     });
-    console.log(Model.type, attributes);
     return this.db.define(Model.type, attributes);
   }
 
@@ -121,12 +117,6 @@ export default class NodeORM2Adapter extends ORMAdapter {
 
   static serializeKey(key) {
     return snakeCase(key);
-  }
-
-  static typeForAttribute(attribute) {
-    let type = typeMap[attribute.type];
-    assert(type, `"${ attribute.type }" data type is not supported by the node-orm2 adapter. Supported types are: ${ Object.keys(typeMap).join(', ') }`);
-    return type;
   }
 
 }
