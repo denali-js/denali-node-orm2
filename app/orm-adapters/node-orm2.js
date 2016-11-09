@@ -1,4 +1,3 @@
-import assert from 'assert';
 import { ORMAdapter } from 'denali';
 import { fromNode } from 'bluebird';
 import forIn from 'lodash/forIn';
