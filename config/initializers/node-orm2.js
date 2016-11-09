@@ -7,9 +7,6 @@ export default {
   initialize(application) {
     let container = application.container;
     let adapter = container.lookup('orm-adapter:node-orm2');
-    if (application.config.ormAdapter === 'node-orm2') {
-      container.register('orm-adapter:application', adapter);
-    }
     let config = application.config.database;
 
     return fromNode((cb) => {
