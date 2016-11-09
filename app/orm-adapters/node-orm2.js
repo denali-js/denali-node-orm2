@@ -8,26 +8,26 @@ import upperFirst from 'lodash/upperFirst';
 export default class NodeORM2Adapter extends ORMAdapter {
 
   static find(type, query /* , options */) {
-    let AdapterModel = this.adapterModels[type];
+    let OrmModel = this.ormModels[type];
     return fromNode((cb) => {
       if ([ 'number', 'string' ].includes(typeof query)) {
-        AdapterModel.get(query, cb);
+        OrmModel.get(query, cb);
       } else {
-        AdapterModel.find(query, cb);
+        OrmModel.find(query, cb);
       }
     });
   }
 
   static createRecord(type, data /* , options */) {
-    let AdapterModel = this.adapterModels[type];
+    let OrmModel = this.ormModels[type];
     return fromNode((cb) => {
-      AdapterModel.create(data, cb);
+      OrmModel.create(data, cb);
     });
   }
 
   static buildRecord(type, data /* , options */) {
-    let AdapterModel = this.adapterModels[type];
-    return new AdapterModel(data);
+    let OrmModel = this.ormModels[type];
+    return new OrmModel(data);
   }
 
   static idFor(model) {
