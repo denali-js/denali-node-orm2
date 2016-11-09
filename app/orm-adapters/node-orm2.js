@@ -1,7 +1,5 @@
 import { ORMAdapter } from 'denali';
 import { fromNode } from 'bluebird';
-import forIn from 'lodash/forIn';
-import forEach from 'lodash/forEach';
 import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
 
@@ -84,37 +82,42 @@ export default class NodeORM2Adapter extends ORMAdapter {
     return fromNode(model.record.remove.bind(model.record));
   }
 
-  static define(Model) {
-    let attributes = {};
-    Model.eachAttribute((key, attribute) => {
-      if (attribute.isAttribute) {
+  static defineModels(models) {
+    // Don't define abstract base classes
+    models = models.filter((Model) => !(Model.hasOwnProperty('abstract') && Model.abstract));
+
+    this.ormModels = {};
+
+    // Define models
+    models.forEach((Model) => {
+      let attributes = {};
+      Model.eachAttribute((key, attribute) => {
         attributes[key] = {
-          mapsTo: this.serializeKey(key),
-          type: attribute.type
+          mapsTo: this.keyToColumn(key),
+          type: this.denaliTypeToORMType(attribute.type)
         };
-      }
+      });
+      this.ormModels[Model.type] = this.db.define(Model.type, attributes);
     });
-    return this.db.define(Model.type, attributes);
-  }
 
-  static defineRelationships(DenaliModel, AdapterModel) {
-    let relationships = {};
-    forIn(DenaliModel, (value, key) => {
-      if (value.isRelationship) {
-        relationships[this.serializeKey(key)] = value;
-      }
-    });
-    forEach(relationships, (config, key) => {
-      let RelatedAdapterModel = this.adapterModels[config.relatedType];
-      if (config.hasOne) {
-        AdapterModel.hasOne(key, RelatedAdapterModel);
-      } else {
-        AdapterModel.hasMany(key, RelatedAdapterModel);
-      }
+    // Define relationships between models
+    models.forEach((Model) => {
+      Model.eachRelationship((key, relationship) => {
+        let Related = this.ormModels[relationship.relatedType];
+        if (relationship.hasOne) {
+          Model.hasOne(key, Related);
+        } else {
+          Model.hasMany(key, Related);
+        }
+      });
     });
   }
 
-  static serializeKey(key) {
+  static denaliTypeToORMType(denaliType) {
+    return denaliType;
+  }
+
+  static keyToColumn(key) {
     return snakeCase(key);
   }
 
