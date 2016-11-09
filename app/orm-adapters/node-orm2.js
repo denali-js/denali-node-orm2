@@ -120,5 +120,3 @@ export default class NodeORM2Adapter extends ORMAdapter {
   }
 
 }
-
-

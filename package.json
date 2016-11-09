@@ -11,14 +11,20 @@
   ],
   "main": "app/addon.js",
   "license": "MIT",
+  "scripts": {
+    "coverage": "scripts/coverage.sh",
+    "preversion": "scripts/preversion.sh",
+    "release": "scripts/release.sh",
+    "test": "scripts/test.sh"
+  },
   "dependencies": {
     "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
     "bluebird": "^3.4.6",
-    "denali": "^0.0.12",
-    "eslint": "^2.11.0",
-    "eslint-config-denali": "^1.1.0",
+    "denali": "0.0.13",
+    "denali-babel": "^0.0.2",
+    "denali-eslint": "^0.0.3",
     "lodash": "^4.16.4",
     "mongodb": "^2.1.19",
     "mysql": "^2.10.2",
@@ -28,7 +34,11 @@
   },
   "devDependencies": {
     "ava": "^0.16.0",
-    "babel-eslint": "^6.0.4"
+    "babel-eslint": "^6.0.4",
+    "babel-plugin-istanbul": "^2.0.1",
+    "codeclimate-test-reporter": "^0.4.0",
+    "nyc": "^8.1.0",
+    "standard-version": "^2.4.0"
   },
   "ava": {
     "plugins": [],
