@@ -23,7 +23,7 @@
     "babel-preset-latest": "^6.16.0",
     "bluebird": "^3.4.6",
     "denali": "0.0.13",
-    "denali-babel": "^0.0.2",
+    "denali-babel": "^0.0.4",
     "denali-eslint": "^0.0.3",
     "lodash": "^4.16.4",
     "mongodb": "^2.1.19",
