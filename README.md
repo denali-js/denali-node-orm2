@@ -17,7 +17,7 @@ expects.  Here are some of the key basic types:
 - `number`
 - `boolean`
 - `json`
-- `data`
+- `date`
 
 Node-ORM2 supports additional types ([visible here](https://github.com/dresende/node-orm2/wiki/Model-Properties#types))
 and can support additional types that match your DB of choice.
