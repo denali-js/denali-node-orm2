@@ -2,7 +2,10 @@
   "name": "denali-node-orm2",
   "version": "0.0.1",
   "scripts": {
-    "test": "denali test"
+    "coverage": "scripts/coverage.sh",
+    "preversion": "scripts/preversion.sh",
+    "release": "scripts/release.sh",
+    "test": "scripts/test.sh"
   },
   "keywords": [
     "denali",
@@ -11,20 +14,14 @@
   ],
   "main": "app/addon.js",
   "license": "MIT",
-  "scripts": {
-    "coverage": "scripts/coverage.sh",
-    "preversion": "scripts/preversion.sh",
-    "release": "scripts/release.sh",
-    "test": "scripts/test.sh"
-  },
   "dependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.16.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
     "bluebird": "^3.4.6",
-    "denali": "0.0.13",
-    "denali-babel": "^0.0.4",
-    "denali-eslint": "^0.0.3",
+    "denali": "0.0.x",
+    "denali-babel": "0.0.x",
+    "denali-eslint": "0.0.x",
     "lodash": "^4.16.4",
     "mongodb": "^2.1.19",
     "mysql": "^2.10.2",
