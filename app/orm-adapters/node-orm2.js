@@ -5,66 +5,62 @@ import upperFirst from 'lodash/upperFirst';
 
 export default class NodeORM2Adapter extends ORMAdapter {
 
-  static find(type, query /* , options */) {
+  find(type, query) {
     let OrmModel = this.ormModels[type];
-    return fromNode((cb) => {
-      if ([ 'number', 'string' ].includes(typeof query)) {
-        OrmModel.get(query, cb);
-      } else {
-        OrmModel.find(query, cb);
-      }
-    });
+    if ([ 'number', 'string' ].includes(typeof query)) {
+      return fromNode((cb) => OrmModel.get(query, cb));
+    } else {
+      return fromNode((cb) => OrmModel.find(query, cb));
+    }
   }
 
-  static createRecord(type, data /* , options */) {
+  createRecord(type, data) {
     let OrmModel = this.ormModels[type];
-    return fromNode((cb) => {
-      OrmModel.create(data, cb);
-    });
+    return fromNode((cb) => OrmModel.create(data, cb));
   }
 
-  static buildRecord(type, data /* , options */) {
+  buildRecord(type, data) {
     let OrmModel = this.ormModels[type];
     return new OrmModel(data);
   }
 
-  static idFor(model) {
+  idFor(model) {
     return model.record.id;
   }
 
-  static getAttribute(model, property) {
+  getAttribute(model, property) {
     return model.record[property];
   }
 
-  static setAttribute(model, property, value) {
+  setAttribute(model, property, value) {
     model.record[property] = value;
     return value;
   }
 
-  static deleteAttribute(model, property) {
+  deleteAttribute(model, property) {
     model.record[property] = null;
     return true;
   }
 
-  static getRelated(model, relationship) {
+  getRelated(model, relationship) {
     return fromNode((cb) => {
       model.record[`get${ upperFirst(relationship) }`](cb);
     });
   }
 
-  static setRelated(model, relationship, relatedRecords) {
+  setRelated(model, relationship, relatedRecords) {
     return fromNode((cb) => {
       model.record[`set${ upperFirst(relationship) }`](relatedRecords, cb);
     });
   }
 
-  static addRelated(model, relationship, relatedRecord) {
+  addRelated(model, relationship, relatedRecord) {
     return fromNode((cb) => {
       model.record[`add${ upperFirst(relationship) }`](relatedRecord, cb);
     });
   }
 
-  static removeRelated(model, relationship, relatedRecord) {
+  removeRelated(model, relationship, relatedRecord) {
     return fromNode((cb) => {
       let args = [ cb ];
       if (relatedRecord) {
@@ -74,15 +70,15 @@ export default class NodeORM2Adapter extends ORMAdapter {
     });
   }
 
-  static saveRecord(model) {
+  saveRecord(model) {
     return fromNode(model.record.save.bind(model.record));
   }
 
-  static deleteRecord(model) {
+  deleteRecord(model) {
     return fromNode(model.record.remove.bind(model.record));
   }
 
-  static defineModels(models) {
+  defineModels(models) {
     // Don't define abstract base classes
     models = models.filter((Model) => !(Model.hasOwnProperty('abstract') && Model.abstract));
 
@@ -113,11 +109,11 @@ export default class NodeORM2Adapter extends ORMAdapter {
     });
   }
 
-  static denaliTypeToORMType(denaliType) {
+  denaliTypeToORMType(denaliType) {
     return denaliType;
   }
 
-  static keyToColumn(key) {
+  keyToColumn(key) {
     return snakeCase(key);
   }
 
