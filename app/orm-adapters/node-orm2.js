@@ -9,9 +9,8 @@ export default class NodeORM2Adapter extends ORMAdapter {
     let OrmModel = this.ormModels[type];
     if ([ 'number', 'string' ].includes(typeof query)) {
       return fromNode((cb) => OrmModel.get(query, cb));
-    } else {
-      return fromNode((cb) => OrmModel.find(query, cb));
     }
+    return fromNode((cb) => OrmModel.find(query, cb));
   }
 
   createRecord(type, data) {
