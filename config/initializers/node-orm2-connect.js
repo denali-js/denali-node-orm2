@@ -15,9 +15,5 @@ export default {
       application.logger.error('Error initializing the node-orm2 adapter or database connection:');
       application.logger.error(error.stack);
     }
-
-    if (config.syncSchema) {
-      await fromNode((cb) => adapter.db.sync(cb));
-    }
   }
 };
