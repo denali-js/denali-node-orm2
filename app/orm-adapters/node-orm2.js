@@ -2,15 +2,28 @@ import { ORMAdapter } from 'denali';
 import { fromNode } from 'bluebird';
 import snakeCase from 'lodash/snakeCase';
 import upperFirst from 'lodash/upperFirst';
+import assign from 'lodash/assign';
 
 export default class NodeORM2Adapter extends ORMAdapter {
 
-  find(type, query) {
+  find(type, id) {
     let OrmModel = this.ormModels[type];
-    if ([ 'number', 'string' ].includes(typeof query)) {
-      return fromNode((cb) => OrmModel.get(query, cb));
-    }
-    return fromNode((cb) => OrmModel.find(query, cb));
+    return fromNode((cb) => OrmModel.get(id, cb));
+  }
+
+  all(type, options = {}) {
+    let OrmModel = this.ormModels[type];
+    return fromNode((cb) => OrmModel.all(null, options, cb));
+  }
+
+  query(type, query, options = {}) {
+    let OrmModel = this.ormModels[type];
+    return fromNode((cb) => OrmModel.find(query, options, cb));
+  }
+
+  findOne(type, query) {
+    let OrmModel = this.ormModels[type];
+    return fromNode((cb) => OrmModel.one(query, cb));
   }
 
   createRecord(type, data) {
@@ -87,10 +100,10 @@ export default class NodeORM2Adapter extends ORMAdapter {
     models.forEach((Model) => {
       let attributes = {};
       Model.eachAttribute((key, attribute) => {
-        attributes[key] = {
+        attributes[key] = assign({
           mapsTo: this.keyToColumn(key),
           type: this.denaliTypeToORMType(attribute.type)
-        };
+        }, attribute.options);
       });
       this.ormModels[Model.type] = this.db.define(Model.type, attributes);
     });
@@ -98,11 +111,12 @@ export default class NodeORM2Adapter extends ORMAdapter {
     // Define relationships between models
     models.forEach((Model) => {
       Model.eachRelationship((key, relationship) => {
-        let Related = this.ormModels[relationship.relatedType];
-        if (relationship.hasOne) {
-          Model.hasOne(key, Related);
+        let OrmModel = this.ormModels[Model.type];
+        let Related = this.ormModels[relationship.type];
+        if (relationship.mode === 'hasOne') {
+          OrmModel.hasOne(key, Related);
         } else {
-          Model.hasMany(key, Related);
+          OrmModel.hasMany(key, Related);
         }
       });
     });
