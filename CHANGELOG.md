@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.4"></a>
+# [0.0.4](https://github.com/acburdine/denali-node-orm2/compare/v0.0.1...v0.0.4) (2017-03-22)
+
+### Bug Fixes
+
+* **format:** add .editorconfig file ([2f3269c](https://github.com/acburdine/denali-node-orm2/commit/2f3269c))
+* **initializers:** sync database after orm model definition ([b0c3933](https://github.com/acburdine/denali-node-orm2/commit/b0c3933))
+* add updated .babelrc files so babel will build correctly (#10) ([098865e](https://github.com/acburdine/denali-node-orm2/commit/098865e))
+* update to use non-static methods ([79e3314](https://github.com/acburdine/denali-node-orm2/commit/79e3314))
+
+### Features
+
+* update to work with latest Denali (#8) ([392fadf](https://github.com/acburdine/denali-node-orm2/commit/392fadf))
+
+
 <a name="0.0.1"></a>
 ## 0.0.1 (2016-11-14)
 
