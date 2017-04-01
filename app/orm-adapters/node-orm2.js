@@ -46,7 +46,7 @@ export default class NodeORM2Adapter extends ORMAdapter {
 
   setAttribute(model, property, value) {
     model.record[property] = value;
-    return value;
+    return true;
   }
 
   deleteAttribute(model, property) {
