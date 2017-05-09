@@ -1,6 +1,6 @@
 {
   "name": "denali-node-orm2",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "coverage": "scripts/coverage.sh",
     "preversion": "scripts/preversion.sh",

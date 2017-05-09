@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.5"></a>
+## [0.0.5](https://github.com/acburdine/denali-node-orm2/compare/v0.0.4...v0.0.5) (2017-05-09)
+
+
+### Bug Fixes
+
+* **associations:** update & fix *Related methods on adapter ([8231861](https://github.com/acburdine/denali-node-orm2/commit/8231861))
+* **orm:** return true from setAttribute ([6b278aa](https://github.com/acburdine/denali-node-orm2/commit/6b278aa))
+
+
+
 <a name="0.0.4"></a>
 # [0.0.4](https://github.com/acburdine/denali-node-orm2/compare/v0.0.1...v0.0.4) (2017-03-22)
 
