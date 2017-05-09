@@ -60,25 +60,29 @@ export default class NodeORM2Adapter extends ORMAdapter {
     });
   }
 
-  setRelated(model, relationship, relatedRecords) {
+  setRelated(model, relationshipName, relationshipDefinition, relatedModels) {
+    // If relatedRecords is an array (e.g. a hasMany relationship), we need to get all of the actual record instances,
+    // so we pass it through a map function. Otherwise, we just get the single record
+    let related = Array.isArray(relatedModels) ? relatedModels.map((relatedModel) => relatedModel.record) : relatedModels.record;
+
     return fromNode((cb) => {
-      model.record[`set${ upperFirst(relationship) }`](relatedRecords, cb);
+      model.record[`set${ upperFirst(relationshipName) }`](related, cb);
     });
   }
 
-  addRelated(model, relationship, relatedRecord) {
+  addRelated(model, relationshipName, relationshipDefinition, { record: relatedRecord }) {
     return fromNode((cb) => {
-      model.record[`add${ upperFirst(relationship) }`](relatedRecord, cb);
+      model.record[`add${ upperFirst(relationshipName) }`](relatedRecord, cb);
     });
   }
 
-  removeRelated(model, relationship, relatedRecord) {
+  removeRelated(model, relationshipName, relationshipDefintion, { record: relatedRecord }) {
     return fromNode((cb) => {
       let args = [ cb ];
       if (relatedRecord) {
         args.unshift([ relatedRecord ]);
       }
-      model.record[`remove${ upperFirst(relationship) }`](...args);
+      model.record[`remove${ upperFirst(relationshipName) }`](...args);
     });
   }
 
