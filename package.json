@@ -2,6 +2,7 @@
   "name": "denali-node-orm2",
   "version": "0.0.5",
   "scripts": {
+    "build": "denali build",
     "coverage": "scripts/coverage.sh",
     "preversion": "scripts/preversion.sh",
     "release": "scripts/release.sh",
@@ -12,31 +13,31 @@
     "denali-addon",
     "addon"
   ],
-  "main": "app/addon.js",
+  "main": "lib/orm2-adapter.js",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "denali": "0.0.x",
+    "denali": "^0.0.29",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.25",
+    "mongodb": "^2.2.30",
     "mysql": "^2.13.0",
     "orm": "^3.2.3",
-    "pg": "^6.1.5",
+    "pg": "^6.4.0",
     "sqlite3": "^3.1.4"
   },
   "devDependencies": {
-    "ava": "^0.18.1",
-    "babel-eslint": "^7.2.0",
-    "babel-plugin-istanbul": "^3.1.2",
-    "babel-plugin-transform-class-properties": "^6.22.0",
+    "ava": "^0.20.0",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-istanbul": "^4.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-preset-latest": "^6.24.0",
-    "codeclimate-test-reporter": "^0.4.0",
+    "babel-preset-latest": "^6.24.1",
+    "codeclimate-test-reporter": "^0.5.0",
     "denali-babel": "0.0.x",
-    "denali-cli": "0.0.x",
+    "denali-cli": "^0.0.12",
     "denali-eslint": "0.0.x",
-    "nyc": "^10.1.2",
-    "standard-version": "^4.0.0"
+    "nyc": "^11.0.3",
+    "standard-version": "^4.2.0"
   },
   "ava": {
     "plugins": [],

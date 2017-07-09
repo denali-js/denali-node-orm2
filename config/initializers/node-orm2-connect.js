@@ -6,11 +6,16 @@ export default {
   before: 'define-orm-models',
   async initialize(application) {
     let container = application.container;
-    let adapter = container.lookup('orm-adapter:node-orm2');
-    let config = application.config.database;
+    let config = application.config;
+
+    if (!config.database || !config.database.orm2) {
+      // Config is not specified
+      return;
+    }
 
     try {
-      adapter.db = await fromNode((cb) => orm.connect(config.url, cb));
+      let connection = await fromNode((cb) => orm.connect(config.database.orm2, cb));
+      container.register('database:orm2', connection, { singleton: true });
     } catch (error) {
       application.logger.error('Error initializing the node-orm2 adapter or database connection:');
       application.logger.error(error.stack);
