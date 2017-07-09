@@ -5,10 +5,10 @@ export default {
   after: 'define-orm-models',
   async initialize(application) {
     let container = application.container;
-    let adapter = container.lookup('orm-adapter:node-orm2');
+    let db = container.lookup('database:orm2', { loose: true });
 
-    if (application.config.database.syncSchema) {
-      await fromNode((cb) => adapter.db.sync(cb));
+    if (db && application.config.database.sync) {
+      await fromNode((cb) => db.sync(cb));
     }
   }
 };
